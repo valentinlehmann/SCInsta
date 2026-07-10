@@ -6,7 +6,11 @@
 - (void)didMoveToWindow {
     %orig;
 
-    if ([self.accessibilityIdentifier isEqualToString:@"profile-more-button"]) {
+    // IG's profile nav-bar redesign (~430+) renamed the burger/more button's
+    // accessibilityIdentifier to "profile-more-bar-button"; older builds used
+    // "profile-more-button". Match both so the long-press keeps working.
+    NSString *aid = self.accessibilityIdentifier;
+    if ([aid isEqualToString:@"profile-more-button"] || [aid isEqualToString:@"profile-more-bar-button"]) {
         [self addLongPressGestureRecognizer];
     }
 
