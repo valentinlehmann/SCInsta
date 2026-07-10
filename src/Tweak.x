@@ -634,8 +634,12 @@ shouldPersistLastBugReportId:(id)arg6
 }
 %end
 
-%hook IGSundialViewerVerticalUFI
-- (void)_didTapLikeButton:(id)arg1 {
+// IG moved the reels/sundial vertical UFI into a Swift module and renamed the
+// button handlers: _didTapLikeButton:/_didTapRepostButton: (with arg) became the
+// no-arg didTapLikeButton/didTapRepostButton, and _didLongPress…Button: became
+// didLongPress…Button:. Hook the Swift class with the new selectors.
+%hook _TtC26IGSundialViewerVerticalUFI26IGSundialViewerVerticalUFI
+- (void)didTapLikeButton {
     if ([SCIUtils getBoolPref:@"like_confirm_reels"]) {
         NSLog(@"[SCInsta] Confirm reels like triggered");
 
@@ -646,16 +650,16 @@ shouldPersistLastBugReportId:(id)arg6
     }
 }
 
-- (void)_didLongPressLikeButton:(id)arg1 {
+- (void)didLongPressLikeButton:(id)arg1 {
     if ([SCIUtils getBoolPref:@"like_confirm_reels"]) {
-        NSLog(@"[SCInsta] Confirm repost triggered (long press ignored)");
+        NSLog(@"[SCInsta] Confirm reels like triggered (long press ignored)");
     }
     else {
         return %orig;
     }
 }
 
-- (void)_didTapRepostButton:(id)arg1 {
+- (void)didTapRepostButton {
     if ([SCIUtils getBoolPref:@"repost_confirm"]) {
         NSLog(@"[SCInsta] Confirm repost triggered");
 
@@ -666,7 +670,7 @@ shouldPersistLastBugReportId:(id)arg6
     }
 }
 
-- (void)_didLongPressRepostButton:(id)arg1 {
+- (void)didLongPressRepostButton:(id)arg1 {
     if ([SCIUtils getBoolPref:@"repost_confirm"]) {
         NSLog(@"[SCInsta] Confirm repost triggered (long press ignored)");
     }
