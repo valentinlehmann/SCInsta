@@ -34,6 +34,10 @@
 + (void)showShareVC:(id)item;
 + (void)showSettingsVC:(UIWindow *)window;
 
+// Settings shortcut (long-press profile more/burger button to open tweak settings)
++ (void)attachSettingsShortcutToMoreButton:(UIView *)button;
++ (void)attachSettingsShortcutSearchingHierarchy:(UIView *)root;
+
 // Colours
 + (UIColor *)SCIColor_Primary;
 

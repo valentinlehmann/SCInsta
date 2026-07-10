@@ -1,4 +1,5 @@
 #import "Utils.h"
+#import <objc/runtime.h>
 
 @implementation SCIUtils
 
@@ -95,6 +96,47 @@
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
     
     [rootController presentViewController:navigationController animated:YES completion:nil];
+}
+
+static const char kSCISettingsShortcutAttachedKey;
+
++ (void)sci_openSettingsFromGesture:(UILongPressGestureRecognizer *)sender {
+    if (sender.state != UIGestureRecognizerStateBegan) return;
+
+    NSLog(@"[SCInsta] Tweak settings gesture activated (profile more button)");
+    [self showSettingsVC:sender.view.window];
+}
+
++ (void)attachSettingsShortcutToMoreButton:(UIView *)button {
+    if (!button) return;
+
+    // IG's profile nav-bar redesign uses "profile-more-button" (legacy) and
+    // "profile-more-bar-button" (new action-bar layout) — match either.
+    NSString *aid = button.accessibilityIdentifier;
+    if (!(aid && [aid hasPrefix:@"profile-more"] && [aid hasSuffix:@"button"])) return;
+
+    // Don't attach our gesture twice to the same button instance.
+    if (objc_getAssociatedObject(button, &kSCISettingsShortcutAttachedKey)) return;
+    objc_setAssociatedObject(button, &kSCISettingsShortcutAttachedKey, @YES, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(sci_openSettingsFromGesture:)];
+    [button addGestureRecognizer:longPress];
+
+    NSLog(@"[SCInsta] Attached settings long-press to profile more button (%@ / %@)", aid, NSStringFromClass([button class]));
+}
+
++ (void)attachSettingsShortcutSearchingHierarchy:(UIView *)root {
+    if (!root) return;
+
+    NSString *aid = root.accessibilityIdentifier;
+    if (aid && [aid hasPrefix:@"profile-more"] && [aid hasSuffix:@"button"]) {
+        [self attachSettingsShortcutToMoreButton:root];
+        return;
+    }
+
+    for (UIView *sub in root.subviews) {
+        [self attachSettingsShortcutSearchingHierarchy:sub];
+    }
 }
 
 // Colours
