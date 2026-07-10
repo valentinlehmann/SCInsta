@@ -46,7 +46,11 @@ jobs:
               uses: actions/checkout@v4
               with:
                 repository: theos/theos
-                ref: master
+                # Pinned: theos master's logos submodule (#114, 2026-06-29) regressed
+                # %orig handling so it consumes everything to end-of-line, breaking any
+                # %orig not at line end (e.g. `[foo bar:%orig]`, `MACRO(%orig)`).
+                # This commit is the last one before that bump. Revert to master once fixed.
+                ref: ee5b7098b0cd3188c4c5b8fa43eca56ef7d0919f
                 path: ${{ github.workspace }}/theos
                 submodules: recursive
         
