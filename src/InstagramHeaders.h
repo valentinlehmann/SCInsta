@@ -145,6 +145,10 @@
 - (void)addLongPressGestureRecognizer; // new
 @end
 
+@interface IGFeedItemVideoView : UIView
+@property (nonatomic, strong) id delegate;
+@end
+
 @interface IGModernFeedVideoCell : UIView
 - (id)mediaCellFeedItem;
 - (void)addLongPressGestureRecognizer; // new

@@ -37,8 +37,8 @@
     CONFIRMPOSTLIKE(%orig);
 }
 %end
-%hook IGVideoPlayerOverlayContainerView
-- (void)_handleDoubleTapGesture:(id)arg1 {
+%hook IGFeedItemVideoView
+- (void)_onDoubleTap:(id)arg1 {
     CONFIRMPOSTLIKE(%orig);
 }
 %end
