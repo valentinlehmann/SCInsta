@@ -24,6 +24,7 @@ BOOL dmVisualMsgsViewedButtonEnabled = false;
     // Default SCInsta config
     NSDictionary *sciDefaults = @{
         @"hide_ads": @(YES),
+        @"disable_update_nag": @(YES),
         @"copy_description": @(YES),
         @"detailed_color_picker": @(YES),
         @"remove_screenshot_alert": @(YES),

@@ -238,6 +238,7 @@
                                         @{
                                             @"header": @"Instagram",
                                             @"rows": @[
+                                                [SCISetting switchCellWithTitle:@"Disable update reminders" subtitle:@"Removes the \"It's time to update Instagram Beta\" TestFlight nag that can block the app" defaultsKey:@"disable_update_nag"],
                                                 [SCISetting switchCellWithTitle:@"Disable safe mode" subtitle:@"Makes Instagram not reset settings after subsequent crashes (at your own risk)" defaultsKey:@"disable_safe_mode"]
                                             ]
                                         },
